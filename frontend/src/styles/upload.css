@@ -1,0 +1,7 @@
+.upload-dropzone {
+  border: 2px dashed var(--border);
+  border-radius: 8px;
+  padding: 40px;
+  text-align: center;
+  background: var(--bg-main);
+}

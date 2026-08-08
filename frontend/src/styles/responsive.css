@@ -1,0 +1,8 @@
+@media (max-width: 768px) {
+  .app-layout {
+    flex-direction: column;
+  }
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+}
