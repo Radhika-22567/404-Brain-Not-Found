@@ -1,11 +1,13 @@
-const Document = require('../models/Document');
+const Document = require('C:\Users\Dell\Downloads/404-Brain Not Found\backend\models\Document.js');
+const VerificationHistory = require('../models/VerificationHistory');
 const { generateDocumentId } = require('../utils/generateDocumentId');
 const { runPipeline } = require('../services/verificationPipeline');
-const VerificationHistory = require('../models/VerificationHistory');
 
 exports.uploadDocument = async (req, res, next) => {
   try {
-    if (!req.file) return res.status(400).json({ success: false, message: 'Please upload a file' });
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: 'Please upload a document file' });
+    }
 
     const docId = generateDocumentId();
     const newDoc = new Document({
@@ -24,15 +26,14 @@ exports.uploadDocument = async (req, res, next) => {
       user: req.user.id,
       action: 'UPLOAD',
       newStatus: 'pending',
-      reason: 'File uploaded into system'
+      reason: 'File uploaded into repository'
     });
 
-    // Run verification pipeline asynchronously or synchronously
     const processedDoc = await runPipeline(newDoc);
 
-    res.status(201).json({ success: true, data: processedDoc });
+    return res.status(201).json({ success: true, data: processedDoc });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -41,7 +42,7 @@ exports.getDocuments = async (req, res, next) => {
     const { search, status, documentType, page = 1, limit = 10 } = req.query;
     const query = {};
 
-    if (req.user.role === 'user') {
+    if (req.user && req.user.role === 'user') {
       query.uploadedBy = req.user.id;
     }
 
@@ -62,20 +63,20 @@ exports.getDocuments = async (req, res, next) => {
       .populate('uploadedBy', 'name email')
       .populate('reviewer', 'name')
       .sort({ createdAt: -1 })
-      .limit(limit * 1)
-      .skip((page - 1) * limit);
+      .limit(Number(limit))
+      .skip((Number(page) - 1) * Number(limit));
 
-    res.json({
+    return res.json({
       success: true,
       data: {
         documents,
-        totalPages: Math.ceil(count / limit),
+        totalPages: Math.ceil(count / Number(limit)),
         currentPage: Number(page),
         totalDocuments: count
       }
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -85,20 +86,24 @@ exports.getDocumentById = async (req, res, next) => {
       .populate('uploadedBy', 'name email')
       .populate('reviewer', 'name email');
 
-    if (!document) return res.status(404).json({ success: false, message: 'Document not found' });
+    if (!document) {
+      return res.status(404).json({ success: false, message: 'Document not found' });
+    }
 
-    res.json({ success: true, data: document });
+    return res.json({ success: true, data: document });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
 exports.deleteDocument = async (req, res, next) => {
   try {
     const document = await Document.findOneAndDelete({ documentId: req.params.id });
-    if (!document) return res.status(404).json({ success: false, message: 'Document not found' });
-    res.json({ success: true, message: 'Document deleted successfully' });
+    if (!document) {
+      return res.status(404).json({ success: false, message: 'Document not found' });
+    }
+    return res.json({ success: true, message: 'Document deleted successfully' });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };

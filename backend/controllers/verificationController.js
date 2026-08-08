@@ -1,4 +1,4 @@
-const Document = require('../models/Document');
+const Document = require('C:\Users\Dell\Downloads/404-Brain Not Found\backend\models\Document.js');
 const VerificationHistory = require('../models/VerificationHistory');
 
 exports.reviewDocument = async (req, res, next) => {
@@ -6,7 +6,9 @@ exports.reviewDocument = async (req, res, next) => {
     const { status, notes } = req.body;
     const document = await Document.findOne({ documentId: req.params.id });
 
-    if (!document) return res.status(404).json({ success: false, message: 'Document not found' });
+    if (!document) {
+      return res.status(404).json({ success: false, message: 'Document not found' });
+    }
 
     const prevStatus = document.status;
     document.status = status;
@@ -22,12 +24,12 @@ exports.reviewDocument = async (req, res, next) => {
       action: status === 'verified' ? 'APPROVED' : status === 'rejected' ? 'REJECTED' : 'FLAGGED',
       previousStatus: prevStatus,
       newStatus: status,
-      reason: notes || 'Manual verification decision'
+      reason: notes || 'Manual review decision'
     });
 
-    res.json({ success: true, data: document });
+    return res.json({ success: true, data: document });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -38,8 +40,22 @@ exports.getHistory = async (req, res, next) => {
       .populate('reviewer', 'name')
       .sort({ timestamp: -1 });
 
-    res.json({ success: true, data: history });
+    return res.json({ success: true, data: history });
   } catch (error) {
-    next(error);
+    return next(error);
+  }
+};
+
+exports.getAllAuditLogs = async (req, res, next) => {
+  try {
+    const logs = await VerificationHistory.find()
+      .populate('user', 'name')
+      .populate('reviewer', 'name')
+      .sort({ timestamp: -1 })
+      .limit(100);
+
+    return res.json({ success: true, data: logs });
+  } catch (error) {
+    return next(error);
   }
 };

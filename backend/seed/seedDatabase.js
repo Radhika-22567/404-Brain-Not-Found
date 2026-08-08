@@ -1,40 +1,49 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const path = require('path');
+
+// Ensure correct path to models
 const User = require('../models/User');
 const ReferenceRecord = require('../models/ReferenceRecord');
-const Document = require('../models/Document');
+const Document = require('C:\Users\Dell\Downloads/404-Brain Not Found\backend\models\Document.js');
 
-dotenv.config({ path: './.env' });
+// Load environment variables
+dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const seedData = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/docverify');
+    const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/docverify';
+    await mongoose.connect(mongoUri);
+    console.log('Connected to MongoDB for seeding...');
 
-    await User.deleteMany();
-    await ReferenceRecord.deleteMany();
-    await Document.deleteMany();
+    // Clear existing data
+    await User.deleteMany({});
+    await ReferenceRecord.deleteMany({});
+    await Document.deleteMany({});
 
-    const admin = await User.create({
-      name: 'System Admin',
-      email: 'admin@docverify.ai',
-      password: 'password123',
-      role: 'admin'
-    });
+    // Create default accounts
+    await User.create([
+      {
+        name: 'System Admin',
+        email: 'admin@docverify.ai',
+        password: 'password123',
+        role: 'admin'
+      },
+      {
+        name: 'Lead Verifier',
+        email: 'verifier@docverify.ai',
+        password: 'password123',
+        role: 'verifier'
+      },
+      {
+        name: 'Rahul Sharma',
+        email: 'user@docverify.ai',
+        password: 'password123',
+        role: 'user'
+      }
+    ]);
 
-    const verifier = await User.create({
-      name: 'Lead Verifier',
-      email: 'verifier@docverify.ai',
-      password: 'password123',
-      role: 'verifier'
-    });
-
-    const user = await User.create({
-      name: 'Rahul Sharma',
-      email: 'user@docverify.ai',
-      password: 'password123',
-      role: 'user'
-    });
-
+    // Create reference records
     await ReferenceRecord.create([
       {
         recordId: 'REF-001',
@@ -56,10 +65,11 @@ const seedData = async () => {
     ]);
 
     console.log('Database Seeded Successfully!');
-    process.exit();
   } catch (error) {
     console.error('Seeding Error:', error);
-    process.exit(1);
+  } finally {
+    await mongoose.connection.close();
+    process.exit(0);
   }
 };
 

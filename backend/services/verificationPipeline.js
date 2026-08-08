@@ -15,20 +15,20 @@ const runPipeline = async (document) => {
     const ocrText = await extractText(document.filePath, document.fileType);
     document.ocrText = ocrText;
 
-    // Step 2: Extraction
+    // Step 2: Extract Structured Fields
     const extractedData = extractFields(ocrText);
     document.extractedData = extractedData;
 
-    // Step 3: Classification
+    // Step 3: Classify Document Type
     const { documentType, confidence: classificationConfidence } = await classifyDocument(ocrText, extractedData);
     document.documentType = documentType;
     document.classificationConfidence = classificationConfidence;
 
-    // Step 4: Validation
+    // Step 4: Rule Validation
     const validationResult = validateDocument(documentType, extractedData);
     document.verificationResult = validationResult;
 
-    // Step 5: Reference Record Check
+    // Step 5: Reference Database Check
     const referenceMatch = await checkReference(documentType, extractedData);
     document.referenceMatch = referenceMatch;
 
@@ -36,7 +36,7 @@ const runPipeline = async (document) => {
     const duplicateResult = await checkDuplicate(document.documentId, extractedData, ocrText);
     document.duplicateResult = duplicateResult;
 
-    // Step 7: AI Anomaly Analysis
+    // Step 7: Anomaly Detection
     const anomalyResult = await detectAnomalies(extractedData, validationResult, referenceMatch, duplicateResult);
     document.anomalyResult = anomalyResult;
 
@@ -44,7 +44,7 @@ const runPipeline = async (document) => {
     const aiExplanation = await generateExplanation(documentType, validationResult, referenceMatch, duplicateResult, anomalyResult);
     document.aiExplanation = aiExplanation;
 
-    // Step 9: Confidence & Final Status
+    // Step 9: Score & Final Status
     const { confidenceScore, suggestedStatus } = calculateConfidence(
       classificationConfidence,
       validationResult,
@@ -69,9 +69,9 @@ const runPipeline = async (document) => {
 
     return document;
   } catch (error) {
-    console.error('Pipeline Processing Failed:', error);
+    console.error('Verification Pipeline Error:', error);
     document.status = 'flagged';
-    document.aiExplanation = 'Pipeline encountered an unexpected processing error. Flagged for manual review.';
+    document.aiExplanation = 'Pipeline processing error encountered. Flagged for manual review.';
     await document.save();
     return document;
   }

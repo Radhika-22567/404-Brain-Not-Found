@@ -1,4 +1,4 @@
-const Document = require('../models/Document');
+const Document = require('C:\Users\Dell\Downloads/404-Brain Not Found\backend\models\Document.js');
 
 exports.getOverview = async (req, res, next) => {
   try {
@@ -12,7 +12,7 @@ exports.getOverview = async (req, res, next) => {
       { $group: { _id: '$documentType', count: { $sum: 1 } } }
     ]);
 
-    res.json({
+    return res.json({
       success: true,
       data: {
         total,
@@ -24,6 +24,6 @@ exports.getOverview = async (req, res, next) => {
       }
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
