@@ -1,0 +1,87 @@
+[
+  {
+    "_id": { "$oid": "661620000000000000000001" },
+    "documentId": "DOC-1001",
+    "uploadedBy": { "$oid": "661600000000000000000003" },
+    "originalFileName": "degree_certificate.pdf",
+    "filePath": "uploads/sample-degree.pdf",
+    "fileType": "application/pdf",
+    "fileSize": 524288,
+    "documentType": "Certificate",
+    "classificationConfidence": 96,
+    "status": "verified",
+    "extractedData": {
+      "name": "Rahul Sharma",
+      "certificateId": "CERT-2026-001",
+      "institution": "Yeshwantrao Chavan College of Engineering",
+      "issueDate": "2026-05-10"
+    },
+    "ocrText": "Degree Certificate CERT-2026-001 Awarded to Rahul Sharma Yeshwantrao Chavan College of Engineering",
+    "verificationResult": {
+      "missingFields": [],
+      "invalidFields": [],
+      "invalidDates": [],
+      "expired": false,
+      "inconsistencies": []
+    },
+    "referenceMatch": {
+      "status": "exact",
+      "matchPercentage": 100,
+      "differences": []
+    },
+    "duplicateResult": {
+      "isDuplicate": false,
+      "similarityScore": 0
+    },
+    "anomalyResult": {
+      "detected": false,
+      "anomalyScore": 0,
+      "indicators": []
+    },
+    "aiExplanation": "Verified successfully. All required fields were extracted, matched official reference records exactly, and no anomalies or duplicates were identified.",
+    "confidenceScore": 98,
+    "createdAt": { "$date": "2026-03-01T10:00:00.000Z" }
+  },
+  {
+    "_id": { "$oid": "661620000000000000000002" },
+    "documentId": "DOC-1002",
+    "uploadedBy": { "$oid": "661600000000000000000003" },
+    "originalFileName": "vendor_invoice.pdf",
+    "filePath": "uploads/sample-invoice.pdf",
+    "fileType": "application/pdf",
+    "fileSize": 204800,
+    "documentType": "Invoice",
+    "classificationConfidence": 88,
+    "status": "flagged",
+    "extractedData": {
+      "invoiceNumber": "INV-88902",
+      "vendor": "TechSupplies Ltd",
+      "amount": "14000"
+    },
+    "ocrText": "Invoice INV-88902 TechSupplies Ltd Total Amount 14000",
+    "verificationResult": {
+      "missingFields": ["Name"],
+      "invalidFields": [],
+      "invalidDates": [],
+      "expired": false,
+      "inconsistencies": []
+    },
+    "referenceMatch": {
+      "status": "partial",
+      "matchPercentage": 75,
+      "differences": ["Amount mismatch: Document ($14000) vs Reference ($12500)"]
+    },
+    "duplicateResult": {
+      "isDuplicate": false,
+      "similarityScore": 0
+    },
+    "anomalyResult": {
+      "detected": true,
+      "anomalyScore": 45,
+      "indicators": ["Amount mismatch against official reference record"]
+    },
+    "aiExplanation": "Document flagged due to partial reference record mismatch in total amount ($14000 vs $12500). Manual verifier review recommended.",
+    "confidenceScore": 62,
+    "createdAt": { "$date": "2026-03-02T14:30:00.000Z" }
+  }
+]

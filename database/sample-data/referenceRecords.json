@@ -1,0 +1,30 @@
+[
+  {
+    "_id": { "$oid": "661610000000000000000001" },
+    "recordId": "REF-001",
+    "documentType": "Certificate",
+    "name": "Rahul Sharma",
+    "certificateId": "CERT-2026-001",
+    "institution": "Yeshwantrao Chavan College of Engineering",
+    "issueDate": "2026-05-10",
+    "expiryDate": "2030-05-10"
+  },
+  {
+    "_id": { "$oid": "661610000000000000000002" },
+    "recordId": "REF-002",
+    "documentType": "Invoice",
+    "vendor": "TechSupplies Ltd",
+    "invoiceNumber": "INV-88902",
+    "amount": "12500",
+    "issueDate": "2026-02-15"
+  },
+  {
+    "_id": { "$oid": "661610000000000000000003" },
+    "recordId": "REF-003",
+    "documentType": "Identity Document",
+    "name": "Priya Patel",
+    "documentNumber": "ID-99201",
+    "issueDate": "2022-01-10",
+    "expiryDate": "2032-01-10"
+  }
+]

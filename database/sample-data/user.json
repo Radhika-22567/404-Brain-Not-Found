@@ -1,0 +1,29 @@
+[
+  {
+    "_id": { "$oid": "661600000000000000000001" },
+    "name": "System Admin",
+    "email": "admin@docverify.ai",
+    "password": "$2a$10$eE0m9Z48N/wN8GqA6Lgq0e.k9xR5t5e7J.k9xR5t5e7J8K9X0Y1Z2",
+    "role": "admin",
+    "isActive": true,
+    "createdAt": { "$date": "2026-01-01T00:00:00.000Z" }
+  },
+  {
+    "_id": { "$oid": "661600000000000000000002" },
+    "name": "Lead Verifier",
+    "email": "verifier@docverify.ai",
+    "password": "$2a$10$eE0m9Z48N/wN8GqA6Lgq0e.k9xR5t5e7J.k9xR5t5e7J8K9X0Y1Z2",
+    "role": "verifier",
+    "isActive": true,
+    "createdAt": { "$date": "2026-01-02T00:00:00.000Z" }
+  },
+  {
+    "_id": { "$oid": "661600000000000000000003" },
+    "name": "Rahul Sharma",
+    "email": "user@docverify.ai",
+    "password": "$2a$10$eE0m9Z48N/wN8GqA6Lgq0e.k9xR5t5e7J.k9xR5t5e7J8K9X0Y1Z2",
+    "role": "user",
+    "isActive": true,
+    "createdAt": { "$date": "2026-01-03T00:00:00.000Z" }
+  }
+]
