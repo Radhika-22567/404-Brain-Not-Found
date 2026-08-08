@@ -1,4 +1,4 @@
-const Document = require('C:\Users\Dell\Downloads/404-Brain Not Found\backend\models\Document.js');
+const Document = require('../models/Document');
 const VerificationHistory = require('../models/VerificationHistory');
 const { generateDocumentId } = require('../utils/generateDocumentId');
 const { runPipeline } = require('../services/verificationPipeline');

@@ -1,4 +1,5 @@
-const Document = require('C:\Users\Dell\Downloads/404-Brain Not Found\backend\models\Document.js');
+// ✅ CORRECT (Relative import)
+const Document = require('../models/Document');
 const { generatePdfReport } = require('../services/reportService');
 
 exports.generateReport = async (req, res, next) => {
@@ -8,7 +9,7 @@ exports.generateReport = async (req, res, next) => {
       return res.status(404).json({ success: false, message: 'Document not found' });
     }
 
-    generatePdfReport(document, res);
+    return generatePdfReport(document, res);
   } catch (error) {
     return next(error);
   }

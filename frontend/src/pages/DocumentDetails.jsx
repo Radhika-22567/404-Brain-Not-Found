@@ -14,7 +14,7 @@ import ManualReviewPanel from '../components/ManualReviewPanel';
 import VerificationTimeline from '../components/VerificationTimeline';
 import LoadingSpinner from '../components/LoadingSpinner';
 
-// Icons
+// Icons & Utilities
 import { Download, ArrowLeft, RefreshCw, FileText } from 'lucide-react';
 import { formatDate } from '../utils/formatDate';
 
@@ -34,7 +34,6 @@ const DocumentDetails = () => {
       const res = await API.get(`/documents/${id}`);
       setDoc(res.data.data);
 
-      // Fetch verification audit history
       const historyRes = await API.get(`/verification/${id}/history`);
       setHistory(historyRes.data.data || []);
       setError(null);
@@ -57,7 +56,7 @@ const DocumentDetails = () => {
   const handleReviewSubmit = async (documentId, status, notes) => {
     try {
       await API.post(`/verification/${documentId}/review`, { status, notes });
-      await fetchDocDetails(); // Refresh view
+      await fetchDocDetails();
     } catch (err) {
       alert('Review submission failed: ' + (err.response?.data?.message || err.message));
     }
@@ -100,7 +99,7 @@ const DocumentDetails = () => {
       {/* Main Grid Layout */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
         
-        {/* Left Column: File Preview & Timeline */}
+        {/* Left Column: Preview & Audit Trail */}
         <div>
           <div className="card">
             <h3>Document Preview</h3>
@@ -117,9 +116,8 @@ const DocumentDetails = () => {
           </div>
         </div>
 
-        {/* Right Column: AI Analysis & Extraction Results */}
+        {/* Right Column: AI Analysis & Verification Details */}
         <div>
-          {/* Status & Confidence Overview */}
           <div className="card">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
               <h3>{doc.documentId}</h3>
@@ -142,10 +140,8 @@ const DocumentDetails = () => {
             </p>
           </div>
 
-          {/* AI Explanation */}
           <AIExplanation explanation={doc.aiExplanation} />
 
-          {/* Extracted Information */}
           <div className="card">
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
               <FileText size={18} color="#2563eb" />
@@ -163,10 +159,8 @@ const DocumentDetails = () => {
             </div>
           </div>
 
-          {/* Rule Validation */}
           <ValidationResult result={doc.verificationResult} />
 
-          {/* Reference Record Verification */}
           <div className="card">
             <h3>Reference Database Match</h3>
             <p style={{ fontSize: '14px', marginTop: '8px' }}>
@@ -187,14 +181,11 @@ const DocumentDetails = () => {
             )}
           </div>
 
-          {/* Duplicate Detection */}
           <DuplicateResult duplicate={doc.duplicateResult} />
 
-          {/* Manual Review Action Panel for Verifiers/Admins */}
           {isVerifierOrAdmin && (
             <ManualReviewPanel documentId={doc.documentId} onReviewSubmit={handleReviewSubmit} />
           )}
-
         </div>
 
       </div>

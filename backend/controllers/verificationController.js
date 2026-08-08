@@ -1,4 +1,4 @@
-const Document = require('C:\Users\Dell\Downloads/404-Brain Not Found\backend\models\Document.js');
+const Document = require('../models/Document');
 const VerificationHistory = require('../models/VerificationHistory');
 
 exports.reviewDocument = async (req, res, next) => {

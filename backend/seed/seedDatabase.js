@@ -5,7 +5,7 @@ const path = require('path');
 // Ensure correct path to models
 const User = require('../models/User');
 const ReferenceRecord = require('../models/ReferenceRecord');
-const Document = require('C:\Users\Dell\Downloads/404-Brain Not Found\backend\models\Document.js');
+const Document = require('../models/Document');
 
 // Load environment variables
 dotenv.config({ path: path.join(__dirname, '../.env') });
